@@ -1,0 +1,7 @@
+TIME_STR=$(date +"%Y-%m-%d %H-%M-%S")
+RESULT=$(curl  --progress-bar  -X POST "https://test-api.trubit.com/member-api/api/v1/uploadApp"  -H "Content-Type: multipart/form-data" -F "file=@app-prod-release.apk")
+URL=$(echo ${RESULT} | jq -r '.data')
+curl 'https://open.feishu.cn/open-apis/bot/v2/hook/2edf86f4-7e89-439e-963c-37d594e7b898'  \
+   -H 'Content-Type: application/json' \
+   -d "{\"msg_type\":\"text\",\"content\":{\"text\":\"谷歌签名APP上传成功:\n$URL\n时间:$TIME_STR\"}}"
+echo "\n${TIME_STR} \n消息推送完成 \nAPP上传成功 $URL"
